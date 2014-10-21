@@ -1,2 +1,2 @@
 readme.txt
-Work for love
+Work a for love you
