@@ -15,7 +15,6 @@
 		<project.build.locales>zh_CN</project.build.locales>
 		<project.build.jdk>1.8</project.build.jdk>
 
-
 		<!-- 自定义变量 -->
 		<junit.version>4.12</junit.version>
 		<servlet.version>2.5</servlet.version>
@@ -174,6 +173,12 @@
 		    <scope>runtime</scope>
 		</dependency>
 		
+		<!-- Aop -->
+		<dependency>
+		   <groupId>org.aspectj</groupId>
+		   <artifactId>aspectjweaver</artifactId>
+		   <version>1.8.4</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>komia</finalName>

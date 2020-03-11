@@ -111,7 +111,27 @@
         <property name="dataSource" ref="dataSource"></property>    
      </bean>
        
-     <bean id="jdbcTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+     <!-- 配置事务管理器 -->
+     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
      </bean>
+     
+     <!-- 配置事务通知 -->
+     <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="delete*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="update*" propagation="REQUIRED" read-only="false"/>
+            <!-- 他方法，使用如下事务配置 -->
+            <tx:method name="*" propagation="NOT_SUPPORTED" read-only="true"/>
+        </tx:attributes>
+     </tx:advice>
+     
+     <!-- 配置aop -->
+    <aop:config>
+        <!-- 配置切入点表达式 -->
+        <aop:pointcut id="komiaPointCut" expression="execution(* com.komia..*.service.*.*(..))"></aop:pointcut>
+        <!-- 建立切入点表达式和事务的对相应关系 -->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="komiaPointCut"></aop:advisor>
+    </aop:config>
 </beans>  

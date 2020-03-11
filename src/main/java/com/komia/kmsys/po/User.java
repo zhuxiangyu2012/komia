@@ -6,6 +6,8 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("SysUser")
 public class User implements Serializable{
+	private static final long serialVersionUID = 5847984888698536252L;
+	
 	private int id;
 	private String username;
 	private String password;
