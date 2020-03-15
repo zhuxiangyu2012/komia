@@ -16,12 +16,12 @@
     http://www.springframework.org/schema/aop/spring-aop.xsd
     http://www.springframework.org/schema/cache
     http://www.springframework.org/schema/cache/spring-cache-4.2.xsd">
- 
+    
  	<context:component-scan base-package="com.komia">
  		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
  	</context:component-scan>
  	
- 	 <!-- 装载ehcache配置文件 -->
+ 	<!-- 装载ehcache配置文件 -->
     <bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation" value="classpath:ehcache.xml"/>
         <property name="shared" value="true"></property>
@@ -38,11 +38,10 @@
     <cache:annotation-driven cache-manager="springCacheManager"/>
  	
  	<!-- 读取properties文件中的数据 -->
-	<context:property-placeholder	location="classpath:mybatis/jdbc.properties" />
-
+<!-- 	<context:property-placeholder	location="classpath:mybatis/jdbc.dev.properties" /> -->
+	
 	<!-- 指定数据源 -->
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
-          destroy-method="close">
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
         <property name="driverClassName" value="${jdbc.driverClassName}" />
         <property name="url" value="${jdbc.url}" />
@@ -127,11 +126,21 @@
         </tx:attributes>
      </tx:advice>
      
-     <!-- 配置aop -->
+    <!-- 因为service没有实现接口，强制使用cglib代理 -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    
+    <!-- 配置aop -->
     <aop:config>
         <!-- 配置切入点表达式 -->
         <aop:pointcut id="komiaPointCut" expression="execution(* com.komia..*.service.*.*(..))"></aop:pointcut>
         <!-- 建立切入点表达式和事务的对相应关系 -->
         <aop:advisor advice-ref="txAdvice" pointcut-ref="komiaPointCut"></aop:advisor>
     </aop:config>
+    
+    <beans profile="dev">
+    	<context:property-placeholder	location="classpath:mybatis/jdbc.dev.properties" />
+    </beans>
+    <beans profile="prod">
+    	<context:property-placeholder	location="classpath:mybatis/jdbc.prod.properties" />
+    </beans>
 </beans>  

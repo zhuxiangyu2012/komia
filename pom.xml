@@ -24,6 +24,7 @@
 		<jstl.version>1.2</jstl.version>
 		<fastjson.version>1.2.32</fastjson.version>
 		<shiro.version>1.3.2</shiro.version>
+		<logback.version>1.2.3</logback.version>
 	</properties>
 	<dependencies>
 		<!-- junit -->
@@ -113,6 +114,12 @@
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>
 			<version>${shiro.version}</version>
+			<exclusions>
+		   		<exclusion>
+			        <groupId>org.slf4j</groupId>
+			        <artifactId>slf4j-api</artifactId>
+		     	</exclusion>
+		    </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
@@ -124,18 +131,24 @@
 		    <artifactId>shiro-spring</artifactId>
 		    <version>${shiro.version}</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.6.1</version>
 			<scope>test</scope>
-		</dependency> 
+		</dependency>  -->
 		
 		<!-- shiro-ehcache -->
 		<dependency>
 		    <groupId>org.apache.shiro</groupId>
 		    <artifactId>shiro-ehcache</artifactId>
 		    <version>1.5.0</version>
+		    <exclusions>
+		   		<exclusion>
+			        <groupId>org.slf4j</groupId>
+			        <artifactId>slf4j-api</artifactId>
+		     	</exclusion>
+		    </exclusions>
 		</dependency>
 		
 		<!-- ehcache -->
@@ -178,6 +191,54 @@
 		   <groupId>org.aspectj</groupId>
 		   <artifactId>aspectjweaver</artifactId>
 		   <version>1.8.4</version>
+		</dependency>
+		
+		<!-- logback -->
+		<!-- 提供web的方式访问日志 -->
+		<dependency>
+		  <groupId>ch.qos.logback</groupId>
+		  <artifactId>logback-access</artifactId>
+		  <version>${logback.version}</version>
+		</dependency>
+		
+		<!-- 已经包含了logback本身所需的slf4j-api.jar、logback-core.jar及logback-classsic.jar -->
+		<dependency>
+		  <groupId>ch.qos.logback</groupId>
+		  <artifactId>logback-classic</artifactId>
+		  <version>${logback.version}</version>
+		  <exclusions>
+		   		<exclusion>
+			        <groupId>org.slf4j</groupId>
+			        <artifactId>slf4j-api</artifactId>
+		     	</exclusion>
+		   </exclusions>
+		</dependency>
+
+		<!-- 是logback官方提供的对spring的支持 -->
+		<dependency>  
+		    <groupId>org.logback-extensions</groupId>  
+		    <artifactId>logback-ext-spring</artifactId>  
+		    <version>0.1.4</version>
+		</dependency>  
+		
+		<!-- 把Spring源代码中大量使用到的commons-logging替换成slf4j -->
+		<dependency>  
+		    <groupId>org.slf4j</groupId>  
+		    <artifactId>jcl-over-slf4j</artifactId>  
+		    <version>1.7.25</version>  
+		    <exclusions>
+		   		<exclusion>
+			        <groupId>org.slf4j</groupId>
+			        <artifactId>slf4j-api</artifactId>
+		     	</exclusion>
+		    </exclusions>
+		</dependency>  
+		
+		<!-- 支持logback的if表达式 -->
+		<dependency>
+		  <groupId>org.codehaus.janino</groupId>
+		  <artifactId>janino</artifactId>
+		  <version>3.0.6</version>
 		</dependency>
 	</dependencies>
 	<build>

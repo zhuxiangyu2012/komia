@@ -41,14 +41,14 @@
     </bean>
 
     <!-- 会话验证调度器 -->
-    <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
-        <property name="interval" value="1200000"/>
+    <bean id="sessionValidationScheduler" class="com.komia.shiro.KomiaSessionValidationScheduler">
+        <property name="interval" value="1800000"/>
         <property name="sessionManager" ref="sessionManager"/>
     </bean>
 
     <!-- 会话管理器 -->
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
-        <property name="globalSessionTimeout" value="1500000"/>
+        <property name="globalSessionTimeout" value="1200000"/>
         <property name="deleteInvalidSessions" value="true"/>
         <property name="sessionValidationSchedulerEnabled" value="true"/>
         <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>

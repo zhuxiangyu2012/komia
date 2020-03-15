@@ -1,4 +1,4 @@
-package com.komia.common.filter;
+package com.komia.common.listener;
 
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -18,6 +18,10 @@ public class ServletContextFinalizer implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
+	}
+
+	@Override
+	public void contextDestroyed(ServletContextEvent sce) {
 		//这里如果Web应用拥有多个数据库的连接，可以一并关闭
         Enumeration<Driver> drivers = DriverManager.getDrivers();
         Driver driver = null;
@@ -29,10 +33,5 @@ public class ServletContextFinalizer implements ServletContextListener {
             }
         }
         AbandonedConnectionCleanupThread.checkedShutdown();
-	}
-
-	@Override
-	public void contextDestroyed(ServletContextEvent sce) {
-		
 	}
 }

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<!--    转换符作用
+            1.c {length }/lo {length }/logger {length }       输出日志的logger名，可有一个整形参数，功能是缩短logger名，设置为0表示只输入logger最右边点符号之后的字符串。
+            2.C {length }/class {length }                     输出执行记录请求的调用者的全限定名。参数与上面的一样。尽量避免使用，除非执行速度不造成任何问题。
+            3.contextName/cn                                  输出上下文名称。
+            4.d {pattern }/date {pattern }                    输出日志的打印日志，模式语法与java.text.SimpleDateFormat 兼容。
+            5.F / file                                        输出执行记录请求的java源文件名。尽量避免使用，除非执行速度不造成任何问题。
+            6.caller{depth}caller{depth, evaluator-1, ... evaluator-n}         输出生成日志的调用者的位置信息，整数选项表示输出信息深度。
+            7.L / line                                       输出执行日志请求的行号。尽量避免使用，除非执行速度不造成任何问题
+            8.m / msg / message                                  输出应用程序提供的信息。
+            9.M / method                                     输出执行日志请求的方法名。尽量避免使用，除非执行速度不造成任何问题。
+            10.n                                             输出平台先关的分行符“\n”或者“\r\n”。
+            11.p / le / level                                输出日志级别。
+            12.r / relative                                      输出从程序启动到创建日志记录的时间，单位是毫秒
+            13.t / thread                                    输出产生日志的线程名。
+            14.replace(p ){r, t}                             p 为日志内容，r 是正则表达式，将p 中符合r 的内容替换为t 。
+
+    -->
+    
+    <!--定义日志文件的存储地址 -->
+    <property name="LOG_HOME" value="/koima/logs"/>
+    
+    <appender name="CONSOLE_LOG" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder> 
+        	<!--%date日期 %level日志级别 [%thread]当前线程 %logger{50}输出日志的类，
+        	50代表包名加类名的总长度限制 [%file:%line]日志所在文件及行数 %msg%n消息及换行 -->  
+            <pattern>%date | %level | %thread | %logger{50} | %file:%line | %msg%n </pattern>
+        </encoder>  
+    </appender>
+    <!--获取比info级别高(包括info级别)但除error级别的日志-->
+    <appender name="INFO_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+
+        <!--滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${LOG_HOME}/komia_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 日志文件保留天数 -->
+            <maxHistory>30</maxHistory>
+            <!-- 日志文件最大的大小-->
+            <MaxFileSize>5MB</MaxFileSize>
+        </rollingPolicy>
+        
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} | %level | %thread | %logger{50} | %file:%line | %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="ERROR_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} | %level | %thread | %logger{50} | %file:%line | %msg%n</pattern>
+        </encoder>
+        <!--滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${LOG_HOME}/error/komiaerr_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <MaxFileSize>5MB</MaxFileSize>
+        </rollingPolicy>
+    </appender>
+    <!-- 异步输出 -->
+    <appender name="ASYNC_INFO" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>256</queueSize>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="INFO_LOG"/>
+    </appender>
+
+    <appender name="ASYNC_ERROR" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>256</queueSize>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="ERROR_LOG"/>
+    </appender>
+
+	<!-- 设置某个包的日志打印级别 -->
+	<logger name="org.springframework" level="INFO"/>
+	<logger name="net.sf.ehcache" level="INFO"/>
+	<logger name="org.apache.shiro" level="INFO"/>
+	<logger name="org.apache.ibatis" level="INFO"/>
+	<logger name="org.mybatis.spring" level="INFO"/>
+	
+	<if condition='property("Active_Profile").contains("dev")'>
+        <then>
+           	<root level="DEBUG">
+		        <appender-ref ref="CONSOLE_LOG" />
+		        <appender-ref ref="ASYNC_INFO" />
+		        <appender-ref ref="ASYNC_ERROR" />
+	    	</root>
+        </then>
+        <else>
+        	<root level="INFO">
+        		<appender-ref ref="CONSOLE_LOG" />
+		        <appender-ref ref="ASYNC_INFO" />
+		        <appender-ref ref="ASYNC_ERROR" />
+	    	</root>
+        </else>
+    </if>
+
+</configuration>
