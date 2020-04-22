@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-        https://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="  
+    http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context.xsd  
+    http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- 缓存管理器，使用Ehcache实现 -->
 	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
@@ -72,19 +76,31 @@
     
     <!-- 自定义的资源检查过滤器 -->
     <bean id="resourceCheckFilter" class="com.komia.shiro.ResourceCheckFilter"></bean>
+    <!--自定义退出过滤器-->
+	<bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter">
+	    <property name="redirectUrl" value="/logoutSuc"></property>
+	</bean>
     
     <!-- shiro的web过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 	    <property name="securityManager" ref="securityManager"/>
-	    <property name="loginUrl" value="/login"/>
-	    <property name="unauthorizedUrl" value="/unauth"/> 
-	    <!-- override these for application-specific URLs if you like:
-	    <property name="successUrl" value="/home.jsp"/>-->
+	    <property name="loginUrl" value="/unauthen"/>
+	    <property name="unauthorizedUrl" value="/unauthor"/> 
+	    <!-- <property name="successUrl" value="/home.jsp"/>-->
+	    
+	    <property name="filters">
+		    <map>
+		        <entry key="logout" value-ref="logoutFilter" />
+		    </map>
+		</property>
 	    
 	    <property name="filterChainDefinitions">
 	        <value>
-	            /login = anon
-	            /unauth = anon
+	        	/ = anon
+	            /unauthen = anon
+	            /unauthor = anon
+	            /kmlogin = anon
+	            /logoutSuc = anon
 	            /logout = logout
 	            /** = authc,resourceCheckFilter
 	        </value>

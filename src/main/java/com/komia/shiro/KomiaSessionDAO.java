@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import com.komia.util.SerializableUtils;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class KomiaSessionDAO extends CachingSessionDAO {
@@ -17,8 +18,8 @@ public class KomiaSessionDAO extends CachingSessionDAO {
     protected Serializable doCreate(Session session) {
         Serializable sessionId = generateSessionId(session);
         assignSessionId(session, sessionId);
-        String sql = "insert into sys_sessions(id, session) values(?,?)";
-        jdbcTemplate.update(sql, sessionId, SerializableUtils.serialize(session));
+        String sql = "insert into sys_sessions(id, session, date) values(?,?,?)";
+        jdbcTemplate.update(sql, sessionId, SerializableUtils.serialize(session),new Date());
         return session.getId();
     }
     @Override
@@ -26,8 +27,8 @@ public class KomiaSessionDAO extends CachingSessionDAO {
         if(session instanceof ValidatingSession && !((ValidatingSession)session).isValid()) {
             return; //如果会话过期/停止 没必要再更新了
         }
-        String sql = "update sys_sessions set session=? where id=?";
-        jdbcTemplate.update(sql, SerializableUtils.serialize(session), session.getId());
+        String sql = "update sys_sessions set session=? , date = ? where id=?";
+        jdbcTemplate.update(sql, SerializableUtils.serialize(session),new Date(), session.getId());
     }
     @Override
     protected void doDelete(Session session) {

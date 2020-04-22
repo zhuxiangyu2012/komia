@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = {"classpath:spring/springApplication.xml"}) 
 @Rollback(value=false)
 @Transactional(transactionManager="transactionManager")
-@ActiveProfiles("dev")
+//@ActiveProfiles("dev")
 public class TestBase extends AbstractTransactionalJUnit4SpringContextTests{
 	
 }

@@ -4,16 +4,11 @@
 	version="2.5">
 	<display-name>Sofia and Zhuxy 's Komia</display-name>
 	
-	<!-- 设置当前激活的profile -->
-	<context-param>
-	    <param-name>spring.profiles.active</param-name>
-	    <param-value>dev</param-value>
-	</context-param>
 	<!-- 加载spring相关的配置文件 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath:spring/spring-application.xml
+			classpath:spring/spring-application.xml,
 			classpath:shiro/spring-shiro.xml
 		</param-value>
 	</context-param>
@@ -21,6 +16,12 @@
 	<context-param>  
          <param-name>logbackConfigLocation</param-name>  
          <param-value>classpath:logback-spring.xml</param-value>  
+	</context-param>
+	
+	<!-- 设置当前激活的profile -->
+	<context-param>
+	    <param-name>spring.profiles.active</param-name>
+	    <param-value>dev</param-value>
 	</context-param>
 	
 	<!-- logback监听器 -->
@@ -88,8 +89,12 @@
 	</servlet-mapping>
 	
 	<!-- 当访问失效的Session时，跳转到登陆页面 -->
-	<error-page> 
+	<!-- <error-page> 
 		<exception-type>org.apache.shiro.session.InvalidSessionException</exception-type> 
-		<location>/login</location> 
+		<location>/unauthen</location> 
 	</error-page>
+	<error-page> 
+		<exception-type>org.apache.shiro.authz.AuthorizationException</exception-type> 
+		<location>/unauthor</location> 
+	</error-page> -->
 </web-app>
