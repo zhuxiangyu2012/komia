@@ -7,6 +7,12 @@ import com.komia.kmsys.po.Role;
 import com.komia.kmsys.po.User;
 
 public interface IUserDao {
+	public void unlock(int uid);
+	
+	public void lock(User u);
+	
+	public void addFailcnt(int uid);
+	
 	public void addUser(User u);
 	
 	public List<Role> getRoleListByUserId(int uid);

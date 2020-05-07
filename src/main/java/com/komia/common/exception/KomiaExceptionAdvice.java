@@ -3,6 +3,7 @@ package com.komia.common.exception;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.session.InvalidSessionException;
@@ -18,6 +19,13 @@ import com.komia.common.KomiaAjaxInfo;
 @RestControllerAdvice
 public class KomiaExceptionAdvice {
 	private Logger logger = LoggerFactory.getLogger(KomiaExceptionAdvice.class);
+	
+	@ExceptionHandler(LockedAccountException.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public KomiaAjaxInfo handleLockedAccountException(HttpServletRequest request, LockedAccountException exp) {
+		logger.error("LockedAccountException:", exp);
+	    return KomiaAjaxInfo.fail(exp.getMessage());
+	}
 	
 	@ExceptionHandler(UnknownAccountException.class)
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)

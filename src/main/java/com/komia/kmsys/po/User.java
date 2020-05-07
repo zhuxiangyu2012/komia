@@ -1,6 +1,7 @@
 package com.komia.kmsys.po;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
 
@@ -12,7 +13,9 @@ public class User implements Serializable{
 	private String username;
 	private String password;
 	private String nickname;
+	private int failcnt;
 	private int status;
+	private Date unlockDate;
 	
 	public int getId() {
 		return id;
@@ -43,5 +46,17 @@ public class User implements Serializable{
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public Date getUnlockDate() {
+		return unlockDate;
+	}
+	public void setUnlockDate(Date unlockDate) {
+		this.unlockDate = unlockDate;
+	}
+	public int getFailcnt() {
+		return failcnt;
+	}
+	public void setFailcnt(int failcnt) {
+		this.failcnt = failcnt;
 	}
 }

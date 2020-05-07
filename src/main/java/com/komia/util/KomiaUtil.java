@@ -1,5 +1,7 @@
 package com.komia.util;
 
+import java.util.Date;
+
 import org.apache.shiro.crypto.hash.Md5Hash;
 
 public class KomiaUtil {
@@ -15,5 +17,10 @@ public class KomiaUtil {
 			return "".equals(obj);
 		}
 		return false;
+	}
+	
+	public static Date add10Minite() {
+		Date now = new Date();
+		return new Date(now .getTime() + 10*60*1000);
 	}
 }

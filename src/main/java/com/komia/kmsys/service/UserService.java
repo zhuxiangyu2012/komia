@@ -1,5 +1,6 @@
 package com.komia.kmsys.service;
 
+import java.util.Date;
 import java.util.List;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -11,6 +12,7 @@ import com.komia.kmsys.dao.IUserDao;
 import com.komia.kmsys.po.Resource;
 import com.komia.kmsys.po.Role;
 import com.komia.kmsys.po.User;
+import com.komia.util.KomiaConstant;
 import com.komia.util.KomiaUtil;
 
 @Service
@@ -21,15 +23,32 @@ public class UserService {
 	public User login(String username, String password) {
 		User u = userDao.getUserByUserName(username);
 		if(u==null) {
-			throw new UnknownAccountException("用户名或者密码出错");
-		}
-		if(!u.getPassword().equals(KomiaUtil.md5(password, username))) {
-			throw new IncorrectCredentialsException("用户名或者密码出错");
+			throw new UnknownAccountException("用户名或者密码错误");
 		}
 		
 		if(u.getStatus()==0) {
-			throw new LockedAccountException("用户已经被锁定");
+			Date unlockDate = u.getUnlockDate();
+			if(unlockDate!=null&&unlockDate.compareTo(new Date())>0) {
+				throw new LockedAccountException("用户已经被锁定");
+			}
+			this.userDao.unlock(u.getId());
 		}
+		
+		if(!u.getPassword().equals(KomiaUtil.md5(password, username))) {
+			int failcnt = u.getFailcnt() + 1;
+			this.userDao.addFailcnt(u.getId());
+			
+			if(failcnt < KomiaConstant.REMIND_LOGIN_FAIL_CNT) {
+				throw new IncorrectCredentialsException("密码错误");
+			}else if(failcnt >= KomiaConstant.REMIND_LOGIN_FAIL_CNT && failcnt < KomiaConstant.MAX_LOGIN_FAIL_CNT) {
+				throw new IncorrectCredentialsException("密码错误,剩余" + (KomiaConstant.MAX_LOGIN_FAIL_CNT - failcnt) + "次");
+			}else {
+				u.setUnlockDate(KomiaUtil.add10Minite());
+				this.userDao.lock(u);
+				throw new LockedAccountException("用户已经被锁定");
+			}
+		}
+		
 		return u;
 	}
 
