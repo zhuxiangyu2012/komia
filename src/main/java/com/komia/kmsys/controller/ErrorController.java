@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.komia.common.KomiaAjaxInfo;
+import com.komia.util.KomiaConstant;
 
 @RestController
 public class ErrorController {
@@ -17,7 +18,7 @@ public class ErrorController {
 		response.setHeader("content-type", "text/json;charset=UTF-8");
 	    response.setCharacterEncoding("UTF-8");
 	    response.setHeader("Cache-Control", "no-cache, must-revalidate"); 
-	    KomiaAjaxInfo info = KomiaAjaxInfo.fail("No authorization", "noauthor");
+	    KomiaAjaxInfo info = KomiaAjaxInfo.fail("No authorization", KomiaConstant.UN_AUTHORIZATION);
 	    String jsonStr = JSON.toJSONString(info);
 		response.getWriter().write(jsonStr);
 		response.getWriter().flush();
@@ -28,7 +29,7 @@ public class ErrorController {
 		response.setHeader("content-type", "text/json;charset=UTF-8");
 	    response.setCharacterEncoding("UTF-8");
 	    response.setHeader("Cache-Control", "no-cache, must-revalidate"); 
-	    KomiaAjaxInfo info = KomiaAjaxInfo.fail("No authentication", "noauthen");
+	    KomiaAjaxInfo info = KomiaAjaxInfo.fail("No authentication", KomiaConstant.UN_AUTHENTICATION);
 	    String jsonStr = JSON.toJSONString(info);
 		response.getWriter().write(jsonStr);
 		response.getWriter().flush();
@@ -39,7 +40,7 @@ public class ErrorController {
 		response.setHeader("content-type", "text/json;charset=UTF-8");
 	    response.setCharacterEncoding("UTF-8");
 	    response.setHeader("Cache-Control", "no-cache, must-revalidate"); 
-	    KomiaAjaxInfo info = KomiaAjaxInfo.success("Logout Successfully", "logoutsuc");
+	    KomiaAjaxInfo info = KomiaAjaxInfo.success("Logout Successfully", KomiaConstant.LOGOUT_SUCCESS);
 	    String jsonStr = JSON.toJSONString(info);
 		response.getWriter().write(jsonStr);
 		response.getWriter().flush();

@@ -4,7 +4,23 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.komia.kmsys.dao.IResourceDao">
 	
-  <select id="listResources" resultType="SysResource">
+  <select id="getResources" resultType="SysResource">
   	select * from sys_resource 
   </select>
+  
+  <select id="getResourcesByUid" parameterType="int" resultType="SysResource">
+  	select 
+		r.* 
+	from 
+		sys_resource r 
+		join sys_role_resource rs on rs.resid = r.id 
+		join sys_role role on role.id = rs.roleid 
+		join sys_user_role ur on ur.roleid = role.id 
+		join sys_user u on u.id = ur.userid
+	where 
+		u.id = #{uid}
+		and r.status = 0 
+		order by rlevel,rorder
+  </select>
+  
 </mapper>

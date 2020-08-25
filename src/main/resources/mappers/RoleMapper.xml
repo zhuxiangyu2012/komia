@@ -16,15 +16,15 @@
   	update sys_role set name = #{name};
   </update>
   
-  <select id="listRoles" resultType="SysRole">
+  <select id="getRoles" resultType="SysRole">
   	select * from sys_role;
   </select>
   
-  <select id="listUserRole" parameterType="int" resultType="SysRole">
+  <select id="getUserRole" parameterType="int" resultType="SysRole">
   	select r.* from sys_role r join sys_user_role ur on r.id= ur.roleid where ur.userid = #{uid};
   </select>
   
- <select id="loadUserRole" resultType="SysUserRole">
+ <select id="getUserRoleByRoleId" resultType="SysUserRole">
   	select * from sys_user_role ur where ur.userid = #{uid} and ur.roleid = #{roleId};
   </select>
   
@@ -36,7 +36,7 @@
   	delete from sys_user_role ur where ur.userid = #{uid};
   </delete>
   
-  <select id="listRoleResources" parameterType="int">
+  <select id="getRoleResources" parameterType="int">
   	select rs.* from sys_resource rs join sys_role_resource rr on rs.id = rr.resid where rr.roleid = #{roleId}
   </select>
   <insert id="addRoleResource">
@@ -47,7 +47,7 @@
   	delete from sys_role_resource rs where  rs.roleid = #{roleId} and rs.resid = #{resId});
   </delete>
   
-  <select id="loadRoleResource" resultType="SysResource">
+  <select id="getRoleResource" resultType="SysResource">
   	select * from sys_role_resource rs where rs.roleid = #{roleId} and rs.resid = #{resId});
   </select>
 </mapper>

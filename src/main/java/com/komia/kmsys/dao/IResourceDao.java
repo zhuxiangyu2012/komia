@@ -6,6 +6,15 @@ import com.komia.kmsys.po.Resource;
 
 
 public interface IResourceDao {
-	public List<Resource> listResources();
+	/**
+	 * 获取所有资源
+	 * @return
+	 */
+	public List<Resource> getResources();
 	
+	/**
+	 * 根据用户ID获取资源
+	 * @return
+	 */
+	public List<Resource> getResourcesByUid(int uid);
 }

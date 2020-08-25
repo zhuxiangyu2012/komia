@@ -19,22 +19,22 @@ public interface IRoleDao {
 	
 	public void updateRole(Role role);
 	
-	public List<Role> listRoles();
+	public List<Role> getRoles();
 	
-	public List<Role> listUserRole(int uid);
+	public List<Role> getUserRole(int uid);
 	
-	public UserRole loadUserRole(@Param("uid") int uid,@Param("roleId") int roleId);
+	public UserRole getUserRoleByRoleId(@Param("uid") int uid,@Param("roleId") int roleId);
 	
 	public void addUserRole(@Param("uid") int uid,@Param("roleId") int roleId);
 	
 	public void deleteUserRoles(int uid);
 	
-	public List<Resource> listRoleResources(int roleId);
+	public List<Resource> getRoleResources(int roleId);
 	
 	public void addRoleResource(@Param("roleId") int roleId,@Param("resId") int resId);
 	
 	public void deleteRoleResource(@Param("roleId") int roleId,@Param("resId") int resId);
 	
-	public RoleResource loadRoleResource(@Param("roleId") int roleId,@Param("resId") int resId);
+	public RoleResource getRoleResource(@Param("roleId") int roleId,@Param("resId") int resId);
 	
 }

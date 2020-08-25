@@ -33,8 +33,12 @@ public class ResourceService {
 		return null;
 	}
 
-	public List<Resource> listResources() {
-		return resourceDao.listResources();
+	public List<Resource> getResources() {
+		return resourceDao.getResources();
+	}
+
+	public List<Resource> getResourcesByUid(int uid) {
+		return resourceDao.getResourcesByUid(uid);
 	}
 
 }

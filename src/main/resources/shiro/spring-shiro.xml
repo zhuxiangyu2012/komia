@@ -101,7 +101,10 @@
 	            /unauthor = anon
 	            /kmlogin = anon
 	            /logoutSuc = anon
+	            /currentUser = anon
 	            /logout = logout
+	            /common/** = anon
+	            /img/** = anon
 	            /** = authc,resourceCheckFilter
 	        </value>
 	    </property>

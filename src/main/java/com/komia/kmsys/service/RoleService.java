@@ -27,16 +27,16 @@ public class RoleService {
 		return roleDao.loadRole(id);
 	}
 
-	public List<Role> list() {
-		return roleDao.listRoles();
+	public List<Role> getRoles() {
+		return roleDao.getRoles();
 	}
 
-	public List<Role> listUserRoles(int uid) {
-		return roleDao.listUserRole(uid);
+	public List<Role> getUserRoles(int uid) {
+		return roleDao.getUserRole(uid);
 	}
 
-	public UserRole listUserRole(int uid, int roleId) {
-		return roleDao.loadUserRole(uid, roleId);
+	public UserRole getUserRole(int uid, int roleId) {
+		return roleDao.getUserRoleByRoleId(uid, roleId);
 	}
 
 	public void addUserRole(int uid, int roleId) {
