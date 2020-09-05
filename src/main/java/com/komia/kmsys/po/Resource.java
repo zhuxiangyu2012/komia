@@ -44,10 +44,10 @@ public class Resource {
 	public void setType(int type) {
 		this.type = type;
 	}
-	public int getLevel() {
+	public int getRlevel() {
 		return rlevel;
 	}
-	public void setLevel(int level) {
+	public void setRlevel(int level) {
 		this.rlevel = level;
 	}
 	public int getStatus() {
@@ -62,10 +62,10 @@ public class Resource {
 	public void setPkey(String pkey) {
 		this.pkey = pkey;
 	}
-	public int getOrder() {
+	public int getRorder() {
 		return rorder;
 	}
-	public void setOrder(int order) {
+	public void setRorder(int order) {
 		this.rorder = order;
 	}
 }

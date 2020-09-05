@@ -26,6 +26,7 @@ public class ErrorController {
 	
 	@RequestMapping(value="/unauthen",method=RequestMethod.GET)
 	public void unauthen(HttpServletResponse response) throws Exception {
+		response.setStatus(401);
 		response.setHeader("content-type", "text/json;charset=UTF-8");
 	    response.setCharacterEncoding("UTF-8");
 	    response.setHeader("Cache-Control", "no-cache, must-revalidate"); 

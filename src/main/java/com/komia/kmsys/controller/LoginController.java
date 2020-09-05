@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.komia.common.KomiaAjaxInfo;
 import com.komia.kmsys.po.User;
+import com.komia.util.RSAUtil;
 
 @RestController
 @RequestMapping("/")
@@ -22,6 +23,7 @@ public class LoginController {
 	@PostMapping(value="/kmlogin")
 	public ResponseEntity<KomiaAjaxInfo> login(String username,String password) {
 		Subject subject = SecurityUtils.getSubject();
+		password = RSAUtil.privateDecrypt(password);
 		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 		
 		subject.login(token);

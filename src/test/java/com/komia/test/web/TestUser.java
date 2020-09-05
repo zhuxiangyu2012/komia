@@ -16,9 +16,9 @@ public class TestUser extends TestBase{
 	@Test
 	public void insertUser() {
 		User user = new User();
-		user.setUsername("zhuxya");
-		user.setNickname("猪");
-		user.setPassword("pwd");
+		user.setUsername("sofia");
+		user.setNickname("小娜");
+		user.setPassword("admin");
 		user.setStatus(1);
 		userService.add(user);
 		System.out.println(userService);

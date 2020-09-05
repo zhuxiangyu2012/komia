@@ -9,7 +9,7 @@
 	</insert>
 
 	<insert id="unlock" parameterType="int">
-		update sys_user u set u.status = 1 where u.id = #{uid}
+		update sys_user u set u.status = 1 ,u.failcnt = 0 where u.id = #{uid}
 	</insert>
 	
 	<insert id="lock" parameterType="SysUser">

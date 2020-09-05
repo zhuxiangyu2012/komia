@@ -47,6 +47,8 @@ public class UserService {
 				this.userDao.lock(u);
 				throw new LockedAccountException("用户已经被锁定");
 			}
+		}else {
+			this.userDao.unlock(u.getId());
 		}
 		
 		return u;
