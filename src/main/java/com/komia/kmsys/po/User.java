@@ -3,18 +3,25 @@ package com.komia.kmsys.po;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import org.apache.ibatis.type.Alias;
+import org.hibernate.validator.constraints.Length;
 
 @Alias("SysUser")
 public class User implements Serializable{
 	private static final long serialVersionUID = 5847984888698536252L;
 	
 	private int id;
+	@NotEmpty(message="用户名不能为空")
 	private String username;
 	private String password;
+	@NotEmpty(message="昵称不能为空")
 	private String nickname;
 	private int failcnt;
-	private int status;
+	private int status; // 0 锁定  1 正常
 	private Date unlockDate;
 	
 	public int getId() {

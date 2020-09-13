@@ -1,9 +1,13 @@
 package com.komia.common;
 
 public class KomiaAjaxInfo {
+	//错误码
 	private String code;
+	//错误信息
 	private String msg = "";
+	//成功失败
 	private Boolean success;
+	//数据
 	private Object data;
 	
 	public static KomiaAjaxInfo success(Object data) {
@@ -31,6 +35,14 @@ public class KomiaAjaxInfo {
 		KomiaAjaxInfo result = new KomiaAjaxInfo();
 		result.success = false;
 		result.msg = msg;
+		result.code = code;
+		return result;
+	}
+	
+	public static KomiaAjaxInfo fail(Object data,String code) {
+		KomiaAjaxInfo result = new KomiaAjaxInfo();
+		result.success = false;
+		result.data = data;
 		result.code = code;
 		return result;
 	}

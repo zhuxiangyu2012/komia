@@ -8,10 +8,13 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.komia.common.PageInfo;
+import com.komia.common.exception.KomiaException;
 import com.komia.kmsys.dao.IUserDao;
 import com.komia.kmsys.po.Resource;
 import com.komia.kmsys.po.Role;
 import com.komia.kmsys.po.User;
+import com.komia.kmsys.vo.UserSearchVo;
 import com.komia.util.KomiaConstant;
 import com.komia.util.KomiaUtil;
 
@@ -55,16 +58,20 @@ public class UserService {
 	}
 
 	public User add(User user) {
-		if(KomiaUtil.isEmpty(user.getUsername())||KomiaUtil.isEmpty(user.getPassword())) {
-			throw new RuntimeException("用户名或者密码不能为空");
+		user.setPassword(KomiaConstant.DEFAULT_PASSWORD);
+		if(KomiaUtil.isEmpty(user.getUsername())) {
+			throw new KomiaException("创建用户失败");
 		}
 		user.setPassword(KomiaUtil.md5(user.getPassword(), user.getUsername()));
 		userDao.addUser(user);
 		return user;
 	}
 
-	public List<User> getAllUsers() {
-		return userDao.getAllUsers();
+	public PageInfo<User> getAllUsers(UserSearchVo userSearch) {
+		int userCnt = this.userDao.getUsersCount(userSearch);
+		PageInfo<User> pageInfo = new PageInfo<User>(userSearch.getCurrentPage(),userSearch.getPageSize(),userCnt);
+		pageInfo.setPdata(userDao.getUsers(userSearch,pageInfo.getPageSize(),pageInfo.getOffset()));
+		return pageInfo;
 	}
 
 	public List<User> getUsersByRoleId(int roleId) {

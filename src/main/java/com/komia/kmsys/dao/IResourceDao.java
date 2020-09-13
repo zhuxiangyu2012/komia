@@ -17,4 +17,10 @@ public interface IResourceDao {
 	 * @return
 	 */
 	public List<Resource> getResourcesByUid(int uid);
+	
+	/**
+	 * 根据用户ID获取权限资源
+	 * @return
+	 */
+	public List<Resource> getPermissionsByUid(int uid);
 }

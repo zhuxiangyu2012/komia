@@ -11,6 +11,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.ResponseEntity;
+
 public class CorsFilter implements Filter{
 
 	@Override
@@ -22,6 +24,7 @@ public class CorsFilter implements Filter{
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest)req;
 		HttpServletResponse response = (HttpServletResponse) res;
+		
 		response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:8000");
 		response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");  
 		response.setHeader("Access-Control-Max-Age", "3600");  

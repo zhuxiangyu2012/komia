@@ -22,9 +22,35 @@
 		from
 			sys_user_role ur join sys_role r on ur.roleId = r.id and ur.userId = #{uid}
 	</select>
+	
+	<select id="getUsersCount" resultType="int">
+		 select count(id) from sys_user su
+		 where 1 = 1
+		 <if test="userSearch.username !=null and userSearch.username !=''">
+       		 and su.username like concat('%',#{userSearch.username},'%')
+    	 </if >
+    	 <if test="userSearch.nickname !=null and userSearch.nickname !=''">
+       		 and su.nickname like concat('%',#{userSearch.nickname},'%')
+    	 </if >
+    	 <if test="userSearch.status !=null ">
+       		 and su.status = #{userSearch.status}
+    	 </if >
+    	 
+	</select>
 
-	<select id="getAllUsers" resultType="SysUser">
-		 select * from sys_user;
+	<select id="getUsers" resultType="SysUser">
+		 select id,username,nickname,status from sys_user su 
+		 where 1 = 1
+		 <if test="userSearch.username !=null and userSearch.username !=''">
+       		 and su.username like concat('%',#{userSearch.username},'%')
+    	 </if >
+    	 <if test="userSearch.nickname !=null and userSearch.nickname !=''">
+       		 and su.nickname like concat('%',#{userSearch.nickname},'%')
+    	 </if >
+    	 <if test="userSearch.status !=null ">
+       		 and su.status = #{userSearch.status}
+    	 </if >
+    	 limit  #{offset},#{pageSize}
 	</select>
 	
 	<select id="getUsersByRoleId" parameterType="int" resultType="SysUser">
@@ -45,7 +71,8 @@
 		from 
 			sys_user_role ur join sys_role_resource rr on ur.roleid = rr.roleid join sys_resource r on rr.resid = r.id
 		where 
-			ur.userid = #{uid};
+			ur.userid = #{uid}
+			and r.type = 2
 	</select>
 	
 	<!-- <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">

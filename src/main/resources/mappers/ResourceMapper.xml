@@ -16,9 +16,8 @@
 		join sys_role_resource rs on rs.resid = r.id 
 		join sys_role role on role.id = rs.roleid 
 		join sys_user_role ur on ur.roleid = role.id 
-		join sys_user u on u.id = ur.userid
 	where 
-		u.id = #{uid}
+		ur.id = #{uid}
 		and r.status = 0 
 		order by rlevel,rorder
   </select>

@@ -1,6 +1,15 @@
 package com.komia.util;
 
 public class KomiaConstant {
+	//错误参数
+	public static final String ERROR_CODE_BADPARAM = "bad_param";
+	
+	//默认密码
+	public static final String DEFAULT_PASSWORD = "Hello_Komia";
+	
+	//最多登陆失败次数
+	public static final int  DEFAULT_PAGE_SIZE = 8;
+		
 	//最多登陆失败次数
 	public static final int  MAX_LOGIN_FAIL_CNT = 10;
 	
